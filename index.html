@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html class="no-js">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Form with Changwat, Amphoe &amp; Tambon selection using jQuery &amp; JSON.</title>
+		<meta name="description" content="Conditional logic applied to postal address in Thailand, using jQuery & JSON.">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="app.css">
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/atelier-cave-light.min.css">
+	</head>
+	<body>
+		<div class="intro">
+			<h2>Form with Changwat, Amphoe &amp; Tambon selection using jQuery &amp; JSON</h2>
+			<p>This is designed for business owners, administrations and web developers in Thailand that want to get their users/clients to fill out their address.</p>
+		</div>
+		<h3>Your Shipping Address</h3>
+		<form>
+			<div class="pure-g">
+				<fieldset class="pure-u-1-2">
+					<p>
+						<label for="name">Name of Condo / Apartment</label>
+						<input type="text" name="name" placeholder="ex: Lumpini Place"/>
+					</p>
+					<p>
+						<label for="number">Address No.</label>
+						<input required type="text" name="number" placeholder="ex: 50/1 Moo 4"/>
+					</p>
+					<p>
+						<label for="road">Road</label>
+						<input required type="text" name="road" placeholder="ex: 1015 Rama 3 Rd"/>
+					</p>
+				</fieldset>
+				<fieldset class="pure-u-1-2">
+					<p>
+						<label for="changwat">Changwat</label>
+						<select required id="changwat" name="changwat">
+							<option value="">Please select</option>
+						</select>
+					</p>
+					<p>
+						<label for="amphoe">Amphoe</label>
+						<select required id="amphoe" name="amphoe">
+							<option value="">Please select</option>
+						</select>
+					</p>
+					<p>
+						<label for="tambon">Tambon</label>
+						<select required id="tambon" name="tambon">
+							<option value="">Please select</option>
+						</select>
+					</p>
+				</fieldset>
+				<button class="pure-button pure-button-primary" type="submit">Place Order!</button>
+			</div>
+			<pre id="result" style="display: none;"><code class="json"></code></pre>
+		</form>
+		<p class="credit">An experiment from <a href="https://siamkreative.com/">Julien Vernet</a>, based on <a href="https://github.com/ignitry/thai-tambons">the work</a> from Wittawas Wisarnkanchana.</p>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script>window.jQuery || document.write('<script src="libs/jquery/1.10.2/jquery.min.js"><\/script>')</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+		<script src="app.js"></script>
+	</body>
+</html>
