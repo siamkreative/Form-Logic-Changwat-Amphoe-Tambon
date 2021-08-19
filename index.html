@@ -6,6 +6,8 @@
 		<title>Form with Changwat, Amphoe &amp; Tambon selection using jQuery &amp; JSON.</title>
 		<meta name="description" content="Conditional logic applied to postal address in Thailand, using jQuery & JSON.">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css" />
 		<link rel="stylesheet" type="text/css" href="app.css">
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/atelier-cave-light.min.css">
 	</head>
@@ -15,46 +17,39 @@
 			<p>This is designed for business owners, administrations and web developers in Thailand that want to get their users/clients to fill out their address.</p>
 		</div>
 		<h3>Your Shipping Address</h3>
-		<form>
-			<div class="pure-g">
-				<fieldset class="pure-u-1-2">
-					<p>
-						<label for="name">Name of Condo / Apartment</label>
-						<input type="text" name="name" placeholder="ex: Lumpini Place"/>
-					</p>
-					<p>
-						<label for="number">Address No.</label>
-						<input required type="text" name="number" placeholder="ex: 50/1 Moo 4"/>
-					</p>
-					<p>
-						<label for="road">Road</label>
-						<input required type="text" name="road" placeholder="ex: 1015 Rama 3 Rd"/>
-					</p>
-				</fieldset>
-				<fieldset class="pure-u-1-2">
-					<p>
-						<label for="changwat">Changwat</label>
-						<select required id="changwat" name="changwat">
-							<option value="">Please select</option>
-						</select>
-					</p>
-					<p>
-						<label for="amphoe">Amphoe</label>
-						<select required id="amphoe" name="amphoe">
-							<option value="">Please select</option>
-						</select>
-					</p>
-					<p>
-						<label for="tambon">Tambon</label>
-						<select required id="tambon" name="tambon">
-							<option value="">Please select</option>
-						</select>
-					</p>
-				</fieldset>
-				<button class="pure-button pure-button-primary" type="submit">Place Order!</button>
+		<form class="pure-g">
+			<div class="pure-u-1">
+				<label for="address">Your Address</label>
+				<input class="w-100" id="address" name="address" placeholder="ex: 25/1 Soi Thonglor, Sukhumvit 55 Road"
+					   type="text" required/>
 			</div>
-			<pre id="result" style="display: none;"><code class="json"></code></pre>
+			<div class="pure-u-1 pure-u-md-1-2">
+				<label for="changwat">Province (Changwat)</label>
+				<select class="w-100" id="changwat" name="province" required>
+					<option value="">Please select</option>
+				</select>
+			</div>
+			<div class="pure-u-1 pure-u-md-1-2">
+				<label for="amphoe">District (Amphoe)</label>
+				<select class="w-100" id="amphoe" name="sub-district" required>
+					<option value="">Please select</option>
+				</select>
+			</div>
+			<div class="pure-u-1 pure-u-md-1-2">
+				<label for="tambon">Sub-District (Tambon)</label>
+				<select class="w-100" id="tambon" name="district" required>
+					<option value="">Please select</option>
+				</select>
+			</div>
+			<div class="pure-u-1 pure-u-md-1-2">
+				<label for="zipcode">Zip Code</label>
+				<input class="w-100" id="zipcode" name="zipcode" type="text">
+			</div>
+			<div class="pure-u-1">
+				<button class="pure-button pure-button-primary" type="submit">Save Shipping Information</button>
+			</div>
 		</form>
+		<pre id="result" style="display: none;"><code class="json"></code></pre>
 		<p class="credit">An experiment from <a href="https://siamkreative.com/">Julien Vernet</a>, based on <a href="https://github.com/ignitry/thai-tambons">the work</a> from Wittawas Wisarnkanchana.</p>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script>window.jQuery || document.write('<script src="libs/jquery/1.10.2/jquery.min.js"><\/script>')</script>
