@@ -66,6 +66,7 @@ input:focus, select:focus {
 	border-color: #faebcc;
 }
 [type="submit"] {
+	width: 100%;
 	font-size: 120%;
 	padding: 1em 2em;
 }
@@ -87,5 +88,8 @@ input:focus, select:focus {
 		background: white;
 		border-radius: 3px;
 		box-shadow: 0 0 40px rgba(0, 0, 0, 0.05), 0px 30px 40px -25px rgba(0, 0, 0, 0.25);
+	}
+	[type="submit"] {
+		width: inherit;
 	}
 }
