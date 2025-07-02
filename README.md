@@ -14,6 +14,6 @@ View the live demo at:
 - Cascading dropdowns:
   - Province → District → Sub-district
 - Automatic ZIP/postal code population
-- Fast and dependency-light (uses jQuery and static JSON)
+- Fast and dependency-free (uses vanilla JavaScript and the Fetch API)
 - Fully client-side — no backend required
 - Easy to embed in any web project (checkout, signup, admin dashboard, etc.)
