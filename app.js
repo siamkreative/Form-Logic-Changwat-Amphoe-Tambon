@@ -1,97 +1,89 @@
-//This will sort your array
-function SortByName(a, b) {
-	var aName = a.name.toLowerCase();
-	var bName = b.name.toLowerCase();
-	return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+
+function sortByName(a, b) {
+    const aName = a.name.toLowerCase();
+    const bName = b.name.toLowerCase();
+    return aName.localeCompare(bName);
 }
 
-jQuery(document).ready(function ($) {
+async function fetchData(url) {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+}
 
-	var changwatsData, amphoesData, tambonsData;
-	var urls = ['data/changwats/json/en.json', 'data/amphoes/json/en.json', 'data/tambons/json/en.json']
-	var changwatSelect = $('#changwat');
-	var amphoeSelect = $('#amphoe');
-	var tambonSelect = $('#tambon');
-	var defaultOption = '<option value="">Please select</option>';
+function populateSelect(selectElement, data) {
+    selectElement.innerHTML = '<option value="">Please select</option>';
+    data.forEach(item => {
+        const option = document.createElement('option');
+        option.textContent = item.name;
+        option.dataset.pid = item.pid;
+        selectElement.appendChild(option);
+    });
+}
 
-	/**
-	 * Multiple getJSON requests at once
-	 * http://stackoverflow.com/a/19026443/1414881
-	 * http://stackoverflow.com/a/20148292/1414881
-	 */
-	$.when(
-		$.getJSON(urls[0]),
-		$.getJSON(urls[1]),
-		$.getJSON(urls[2])
-	).done(function (changwats, amphoes, tambons) {
-		// Get the JSON data and order it alphabetically
-		changwatsData = changwats[0].en.changwats.sort(SortByName);
-		amphoesData = amphoes[0].en.amphoes.sort(SortByName);
-		tambonsData = tambons[0].en.tambons.sort(SortByName);
+document.addEventListener('DOMContentLoaded', async () => {
+    const changwatSelect = document.querySelector('#changwat');
+    const amphoeSelect = document.querySelector('#amphoe');
+    const tambonSelect = document.querySelector('#tambon');
+    const form = document.querySelector('form');
+    const resultElement = document.querySelector('#result');
+    const codeElement = resultElement.querySelector('code');
 
-		// Append the Changwats list (only once)
-		var options = '';
-		$.each(changwatsData, function (index, val) {
-			options += '<option data-pid="' + val.pid + '">' + val.name + '</option>';
-		});
-		changwatSelect.append(options);
+    try {
+        const [changwats, amphoes, tambons] = await Promise.all([
+            fetchData('data/changwats/json/en.json'),
+            fetchData('data/amphoes/json/en.json'),
+            fetchData('data/tambons/json/en.json')
+        ]);
 
-		// Update the Amphoes list based on Changwats list
-		changwatSelect.on('change', function (event) {
-			event.preventDefault();
+        const changwatsData = changwats.en.changwats.sort(sortByName);
+        const amphoesData = amphoes.en.amphoes.sort(sortByName);
+        const tambonsData = tambons.en.tambons.sort(sortByName);
 
-			var needle = $(':selected', $(this)).attr('data-pid');
-			var options = '';
+        populateSelect(changwatSelect, changwatsData);
 
-			// iterate over each element in the array
-			$.each(amphoesData, function (i, val) {
-				// look for the entry with a matching `changwat_pid` value
-				if (amphoesData[i].changwat_pid == needle) {
-					options += '<option data-pid="' + amphoesData[i].pid + '">' + amphoesData[i].name + '</option>';
-				}
-			});
+        changwatSelect.addEventListener('change', () => {
+            const selectedPid = changwatSelect.options[changwatSelect.selectedIndex].dataset.pid;
+            const filteredAmphoes = amphoesData.filter(amphoe => amphoe.changwat_pid === selectedPid);
+            populateSelect(amphoeSelect, filteredAmphoes);
+            populateSelect(tambonSelect, []); // Reset tambon
+        });
 
-			// Apppend the result to select
-			amphoeSelect.html(defaultOption).append(options);
+        amphoeSelect.addEventListener('change', () => {
+            const selectedPid = amphoeSelect.options[amphoeSelect.selectedIndex].dataset.pid;
+            const filteredTambons = tambonsData.filter(tambon => tambon.amphoe_pid === selectedPid);
+            populateSelect(tambonSelect, filteredTambons);
+        });
 
-			// Reset the tambons
-			tambonSelect.html(defaultOption);
-		});
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const data = {};
 
-		amphoeSelect.on('change', function (event) {
-			event.preventDefault();
+            for (const [key, value] of formData.entries()) {
+                const selectElement = form.querySelector(`[name="${key}"]`);
+                if (selectElement && selectElement.tagName === 'SELECT') {
+                    const selectedOption = selectElement.options[selectElement.selectedIndex];
+                    data[key] = {
+                        name: value,
+                        pid: selectedOption.dataset.pid || null
+                    };
+                } else {
+                    data[key] = value;
+                }
+            }
 
-			var needle = $(':selected', $(this)).attr('data-pid');
-			var options = '';
+            codeElement.textContent = JSON.stringify(data, null, 2);
+            resultElement.style.display = 'block';
+            if (window.hljs) {
+                window.hljs.highlightBlock(codeElement);
+            }
+        });
 
-			// iterate over each element in the array
-			$.each(tambonsData, function (i, val) {
-				// look for the entry with a matching `amphoe_pid` value
-				if (tambonsData[i].amphoe_pid == needle) {
-					options += '<option data-pid="' + tambonsData[i].pid + '">' + tambonsData[i].name + '</option>';
-				}
-			});
-
-			// Apppend the result to select
-			tambonSelect.html(defaultOption).append(options);
-
-		});
-	});
-
-	$('form').submit(function (event) {
-		event.preventDefault();
-
-		var dataArray = $(this).serializeArray(),
-			dataObj = {};
-
-		$(dataArray).each(function (i, field) {
-			dataObj[field.name] = field.value;
-		});
-
-		$('#result').show();
-		$('#result > code').html(JSON.stringify(dataObj)).each(function (i, block) {
-			hljs.highlightBlock(block);
-		});
-	});
-
+    } catch (error) {
+        console.error('Failed to load address data:', error);
+        // Optionally, display an error message to the user
+    }
 });
