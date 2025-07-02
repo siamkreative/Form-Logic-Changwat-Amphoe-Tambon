@@ -1,59 +1,77 @@
 <!DOCTYPE html>
-<html class="no-js">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>Form with Changwat, Amphoe &amp; Tambon selection using jQuery &amp; JSON.</title>
-		<meta name="description" content="Conditional logic applied to postal address in Thailand, using jQuery & JSON.">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
-		<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css" />
-		<link rel="stylesheet" type="text/css" href="app.css">
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/atelier-cave-light.min.css">
-	</head>
-	<body>
-		<div class="intro">
-			<h2>Form with Changwat, Amphoe &amp; Tambon selection using jQuery &amp; JSON</h2>
-			<p>This is designed for business owners, administrations and web developers in Thailand that want to get their users/clients to fill out their address.</p>
-		</div>
-		<h3>Your Shipping Address</h3>
-		<form class="pure-g">
-			<div class="pure-u-1">
-				<label for="address">Your Address</label>
-				<input class="w-100" id="address" name="address" placeholder="ex: 25/1 Soi Thonglor, Sukhumvit 55 Road"
-					   type="text" required/>
-			</div>
-			<div class="pure-u-1 pure-u-md-1-2">
-				<label for="changwat">Province (Changwat)</label>
-				<select class="w-100" id="changwat" name="province" required>
-					<option value="">Please select</option>
-				</select>
-			</div>
-			<div class="pure-u-1 pure-u-md-1-2">
-				<label for="amphoe">District (Amphoe)</label>
-				<select class="w-100" id="amphoe" name="sub-district" required>
-					<option value="">Please select</option>
-				</select>
-			</div>
-			<div class="pure-u-1 pure-u-md-1-2">
-				<label for="tambon">Sub-District (Tambon)</label>
-				<select class="w-100" id="tambon" name="district" required>
-					<option value="">Please select</option>
-				</select>
-			</div>
-			<div class="pure-u-1 pure-u-md-1-2">
-				<label for="zipcode">Zip Code</label>
-				<input class="w-100" id="zipcode" name="zipcode" type="text" inputmode="numeric" pattern="[0-9]*">
-			</div>
-			<div class="pure-u-1">
-				<button class="pure-button pure-button-primary" type="submit">Save Shipping Information</button>
-			</div>
-		</form>
-		<pre id="result" style="display: none;"><code class="json"></code></pre>
-		<p class="credit">An experiment from <a href="https://siamkreative.com/">Julien Vernet</a>, based on <a href="https://github.com/ignitry/thai-tambons">the work</a> from Wittawas Wisarnkanchana.</p>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-		<script>window.jQuery || document.write('<script src="libs/jquery/1.10.2/jquery.min.js"><\/script>')</script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
-		<script src="app.js"></script>
-	</body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thailand Shipping Address Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/atelier-cave-light.min.css">
+    <style>
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+        .hljs {
+            background: transparent;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-8">
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-white p-8 rounded-lg shadow-md">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold">Thailand Shipping Address</h1>
+                    <p class="text-gray-600">A modern, dependency-free form for Thai addresses.</p>
+                </div>
+                <form>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label for="address" class="block text-sm font-medium text-gray-700">Street Address</label>
+                            <input type="text" id="address" name="street_address" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="e.g., 25/1 Soi Thonglor, Sukhumvit 55 Road" required>
+                        </div>
+                        <div>
+                            <label for="changwat" class="block text-sm font-medium text-gray-700">Province (Changwat)</label>
+                            <select id="changwat" name="province" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                                <option value="">Please select</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="amphoe" class="block text-sm font-medium text-gray-700">District (Amphoe)</label>
+                            <select id="amphoe" name="district" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                                <option value="">Please select</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="tambon" class="block text-sm font-medium text-gray-700">Sub-District (Tambon)</label>
+                            <select id="tambon" name="sub_district" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                                <option value="">Please select</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="zipcode" class="block text-sm font-medium text-gray-700">Zip Code</label>
+                            <input type="text" id="zipcode" name="zipcode" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" pattern="[0-9]*" inputmode="numeric">
+                        </div>
+                        <div class="md:col-span-2">
+                            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Save Shipping Information</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+			<pre id="result" class="mt-8 bg-gray-50 border border-gray-200 text-gray-800 p-4 rounded-md shadow-inner" style="display: none;"><code class="json"></code></pre>
+			<p class="text-center text-sm text-gray-500 mt-8">
+				An experiment from <a href="https://siamkreative.com/" class="font-medium text-indigo-600 hover:text-indigo-500">Julien Vernet</a>, based on <a href="https://github.com/ignitry/thai-tambons" class="font-medium text-indigo-600 hover:text-indigo-500">the work</a> from Wittawas Wisarnkanchana.
+			</p>
+        </div>
+    </div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script src="app.js"></script>
+</body>
 </html>
