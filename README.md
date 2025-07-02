@@ -7,6 +7,8 @@ A lightweight and embeddable form for collecting Thai shipping addresses with ca
 View the live demo at:  
 [https://thailand-shipping-address-form.netlify.app/](https://thailand-shipping-address-form.netlify.app/)
 
+![image](https://github.com/user-attachments/assets/dd1f20c5-1d03-43ff-abce-53ff70b35af7)
+
 ## Features
 
 - Cascading dropdowns:
